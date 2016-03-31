@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://java.sun.com/xml/ns/javaee"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+	id="WebApp_ID" version="3.0">
+	<display-name>RESTFulWebService</display-name>
+	<welcome-file-list>
+		<welcome-file>index.html</welcome-file>
+		<welcome-file>index.htm</welcome-file>
+		<welcome-file>index.jsp</welcome-file>
+		<welcome-file>default.html</welcome-file>
+		<welcome-file>default.htm</welcome-file>
+		<welcome-file>default.jsp</welcome-file>
+	</welcome-file-list>
+
+	<servlet>
+		<servlet-name>Jersey</servlet-name>
+		<servlet-class>org.glassfish.jersey.servlet.ServletContainer</servlet-class>
+		<!-- First Way to specify root resource class -->
+		<!-- <init-param> <param-name>jersey.config.server.provider.packages</param-name> 
+			<param-value>com.ektha.bootcamp.service</param-value> </init-param> -->
+
+		<!-- Second Way to specify root resource class -->
+		<init-param>
+			<param-name>javax.ws.rs.Application</param-name>
+			<param-value>com.ektha.bootcamp.application.RootResourceApplication</param-value>
+		</init-param>
+
+		<init-param>
+			<param-name>jersey.config.server.provider.packages</param-name>
+			<param-value>
+		    com.jersey.jaxb,com.fasterxml.jackson.jaxrs.json
+			</param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>Jersey</servlet-name>
+		<url-pattern>/rest/*</url-pattern>
+	</servlet-mapping>
+	
+	<security-constraint>
+		<web-resource-collection>
+		<web-resource-name>Basic</web-resource-name>
+			<url-pattern>/rest/user/service/getUserInformation</url-pattern>
+			<http-method>GET</http-method>
+		</web-resource-collection>
+		<auth-constraint>
+			<role-name>member</role-name>
+		</auth-constraint>
+		<user-data-constraint>
+			<transport-guarantee>CONFIDENTIAL</transport-guarantee>
+		</user-data-constraint>
+	</security-constraint>
+	<login-config>
+		<auth-method>BASIC</auth-method>
+	</login-config>
+</web-app>
